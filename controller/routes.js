@@ -6,19 +6,19 @@ const removeController = require('./removeController')
 const updateController = require('./updateController')
 
 const setup = (app) => {
-    app.get('/:id',retrieveController);
-    app.post('/',createValidator, addController);
-    app.patch('/:id',updateValidator,updateController);
-    app.delete('/:id',removeController);
+    app.get('/:id', retrieveController);
+    app.post('/', createValidator, addController);
+    app.patch('/:id', updateValidator, updateController);
+    app.delete('/:id', removeController);
     //definire app.use dopo la route app.post, app.patch
-    app.use((err,req,res,next) => {
-        if (err && err.error && err.error.isJoi ) {
+    app.use((err, req, res, next) => {
+        if (err && err.error && err.error.isJoi) {
             res.status(400).json({
-                type:err.type,
-                message:err.error.toString()
+                type: err.type,
+                message: err.error.toString()
             })
-            
-        }else {
+
+        } else {
             next(err);
         }
     })

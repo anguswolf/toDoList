@@ -1,9 +1,12 @@
+const {deleteActivityFromFile2} = require('../service/activityService')
+
 module.exports = async (req, res) => {
-    const  activityId = req.params['id'];
+    const activityId = req.params['id'];
     const activity = await deleteActivityFromFile2(activityId)
-    if(activity) {
-    res.status(200).json(activity)
+
+    if (activity) {
+        res.status(200).json(activity)
     } else {
-    res.status(500).json({message:'server error'})
+        res.status(500).json({ message: 'server error' })
     }
 }

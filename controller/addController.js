@@ -1,4 +1,5 @@
 const {addActivity} = require('../service/activityService')
+
 module.exports = async (req,res) => {
     try {
         const result = await addActivity(req.body) // promise
