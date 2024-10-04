@@ -1,5 +1,5 @@
 const fs = require('fs');
-const dbFile = '../activity.db';
+const dbFile = './activity.db';
 const readline = require('readline');
 
 
