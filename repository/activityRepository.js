@@ -1,86 +1,54 @@
-const fs = require('fs');
-const dbFile = './activity.db';
-const readline = require('readline');
+const mongoose = require('mongoose')
+const { Schema } = require('mongoose');
 
-
-const retrieveActivity = async (id) => {
-  if (!fs.existsSync(dbFile)) {
-    return null
-  }
-
-  try {
-    return await new Promise((resolve, reject) => {
-      const readlineInterface = readline.createInterface({
-        input: fs.createReadStream(dbFile),
-        crlfDelay: Infinity
-      });
-      readlineInterface.on('line', (line) => {
-        const activity = JSON.parse(line);
-        if (activity.id == id && activity.status !== 'deleted') {
-          resolve(activity)
-        }
-      });
-      readlineInterface.on('close', () => {
-        return reject(new Error('not found', 404))
-      });
-    })
-  } catch (e) {
-    return null
-  }
+const status = {
+  open:'open',
+  deleted:'deleted',
 }
 
-const addActivity = async (data) => {
-  const content = data;
-  content['id'] = newId();
-  content['createdAt'] = new Date().getTime();
-  content['updatedAt'] = content.createdAt;
+const activitySchema = new Schema({
+    name: String,
+    description: String,
+    dueDate: { type: Date , default: Date.now },
+    status: { type: String, default: status.open },
+  },
+  {
+    timestamps: {
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+      writeConcern: {w: 1, wtimeout: 2000},
+    }
+  }
+);
+activitySchema.index({ name: 1 });
+const activityModel = mongoose.model('activities', activitySchema);
 
-  fs.appendFileSync(dbFile, JSON.stringify(content) + '\n')
-  console.log(content)
-  return content
+const addActivity = async (data) => {
+  const result = await new activityModel(data).save()
+  return result.toJSON({versionKey: false})
+}
+
+const removeActivity = async (id) => {
+  return await update(id, {status: status.deleted})
 }
 
 const updateActivity = async (id, params) => {
-  return await new Promise((resolve, reject) => {
-    const readlineInterface = readline.createInterface({
-      input: fs.createReadStream(dbFile),
-      crlfDelay: Infinity
-    });
-    const activities = [];
-    let activity;
-    readlineInterface.on('line', (line) => {
-      const activityTemp = JSON.parse(line);
-      console.log(activityTemp);
-      console.log(id);
-      if (activityTemp.id == id) {
-        Object.keys(params).forEach(key => {
-          activityTemp[key] = params[key]
-        })
-        activity = { ...activityTemp }
-      }
-      activities.push(JSON.stringify(activityTemp) + '\n')
-    });
-    readlineInterface.on('close', () => {
-      fs.writeFile(dbFile, activities.join(''), err => {
-        if (err) { reject(null); }
-        resolve(activity)
-      });
-    });
-  })
+  const res = await activityModel.findOneAndUpdate(
+    {_id:id},
+    params,
+    {upsert:false, new:true});
+  return res?.toJSON({versionKey:false}) || res;
+}
+const retrieveActivity = async (id) => {
+  const res = await activityModel.findById(id)
+  return res?.toJSON({versionKey:false}) || res;
 }
 
-const newId = () => {
-  if (!fs.existsSync(dbFile)) {
-    fs.openSync(dbFile, 'w');
-  }
-  const file = fs.readFileSync(dbFile);
-  return file.toString().split('\n').length;
-}
 
 module.exports = {
-  retrieveActivity,
   addActivity,
-  updateActivity
-}
-//module.exports = {addActivity:addActivity} implicitamente js 
+  updateActivity,
+  removeActivity,
+  retrieveActivity
 
+}

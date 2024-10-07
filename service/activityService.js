@@ -16,8 +16,8 @@ const updateActivity = async (id, params) => {
 	return await activityRepo.updateActivity(id,params)
   }
 
-const deleteActivityFromFile = async (id) => {
-	return updateActivity(id, {status:'deleted'})
+const removeActivity = async (id) => {
+	return activityRepo.removeActivity(id)
   }
 
 
@@ -25,5 +25,5 @@ module.exports = {
  	retrieveActivity,
 	addActivity,
 	updateActivity,
-	deleteActivityFromFile
+	removeActivity
 }
