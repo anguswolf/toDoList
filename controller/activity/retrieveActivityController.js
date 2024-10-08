@@ -1,4 +1,4 @@
-import {retrieveActivity} from '../service/activityService.js'
+import {retrieveActivity} from '../../service/activityService.js'
 
 export default async (req, res) => {
     const  activityId = req.params['id'];

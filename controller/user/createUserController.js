@@ -1,4 +1,4 @@
-import {register} from '../service/userService.js'
+import {register} from '../../service/userService.js'
 
 export default async (req,res) => {
     try {

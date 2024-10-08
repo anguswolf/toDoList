@@ -8,16 +8,16 @@ import createUserValidator from '../validator/user/createValidator.js'
 /**
  * ACTIVITY CONTROLLERS
  */
-import addActivityController from './addActivityController.js'
-import retrieveActivityController from './retrieveActivityController.js'
-import removeActivityController from './removeActivityController.js'
-import updateActivityController from './updateActivityController.js'
+import addActivityController from './activity/addActivityController.js'
+import retrieveActivityController from './activity/retrieveActivityController.js'
+import removeActivityController from './activity/removeActivityController.js'
+import updateActivityController from './activity/updateActivityController.js'
 
 /**
  * USER CONTROLLERS
  */
-import createUserController from './createUserController.js'
-import checkUserMailController from './checkUserMailController.js'
+import createUserController from './user/createUserController.js'
+import checkUserMailController from './user/checkUserMailController.js'
                                                                      
 const setup = (app) => {
     app.get('/acitivity/:id', retrieveActivityController);

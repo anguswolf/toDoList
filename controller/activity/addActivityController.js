@@ -1,4 +1,4 @@
-import {addActivity} from '../service/activityService.js'
+import {addActivity} from '../../service/activityService.js'
 
 export default async (req,res) => {
     try {
