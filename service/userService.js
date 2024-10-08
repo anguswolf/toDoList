@@ -26,7 +26,7 @@ const sendRegistrationMail = async (email, link) => {
 	  secure: true, // true for 465, false for other ports
 	  auth: {
 		user: senderAddress,
-		pass: 'jrrtisda1975',
+		pass: '****',
 	  },
 	};
 	const mailData = {
