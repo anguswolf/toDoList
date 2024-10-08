@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const { Schema } = require('mongoose');
+import mongoose from 'mongoose'
+import { Schema } from 'mongoose';
 
 const status = {
   open:'open',
@@ -45,7 +45,7 @@ const retrieveActivity = async (id) => {
 }
 
 
-module.exports = {
+export default {
   addActivity,
   updateActivity,
   removeActivity,

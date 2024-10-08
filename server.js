@@ -1,15 +1,16 @@
-const express = require('express');
+import express from 'express';
+import setup from './controller/routes.js';
+import connectionToDb from './database.js';
+
 const app = express();
 const host = 'localhost';
 const port = 8000;
-const setup = require('./controller/routes');
-const connectionToDb = require('./database')
 
 app.use(express.json());
 
 connectionToDb().then(() => {
 	setup(app);
-	app.listen(8000, () => {
+	app.listen(port, host, () => {
 		console.log('Server is running on http://localhost:8000');
 	})
 }).catch((error) => {

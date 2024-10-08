@@ -1,6 +1,6 @@
-const {updateActivity} = require('../service/activityService')
+import {updateActivity} from '../service/activityService.js'
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
     const  activityId = req.params['id'];
     const activity = await updateActivity(activityId, req.body)
     

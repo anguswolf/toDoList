@@ -1,6 +1,6 @@
-const {retrieveActivity} = require('../service/activityService')
+import {retrieveActivity} from '../service/activityService.js'
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
     const  activityId = req.params['id'];
     const activity = await retrieveActivity(activityId)
     

@@ -1,6 +1,6 @@
-const {addActivity} = require('../service/activityService')
+import {addActivity} from '../service/activityService.js'
 
-module.exports = async (req,res) => {
+export default async (req,res) => {
     try {
         const result = await addActivity(req.body) // promise
         res.status(201).json(result);

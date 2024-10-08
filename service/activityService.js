@@ -1,4 +1,4 @@
-const activityRepo = require('../repository/activityRepository')
+import activityRepo from '../repository/activityRepository.js'
 
 const retrieveActivity = async (id) => {
 	return await activityRepo.retrieveActivity(id)
@@ -20,8 +20,10 @@ const removeActivity = async (id) => {
 	return activityRepo.removeActivity(id)
   }
 
+  
 
-module.exports = {
+
+export {
  	retrieveActivity,
 	addActivity,
 	updateActivity,
