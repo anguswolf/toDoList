@@ -17,6 +17,7 @@ import updateActivityController from './updateActivityController.js'
  * USER CONTROLLERS
  */
 import createUserController from './createUserController.js'
+import checkUserMailController from './checkUserMailController.js'
                                                                      
 const setup = (app) => {
     app.get('/acitivity/:id', retrieveActivityController);
@@ -25,6 +26,7 @@ const setup = (app) => {
     app.delete('/acitivity/:id', removeActivityController);
     //definire app.use dopo la route app.post, app.patch
     app.post('/user',createUserValidator, createUserController);
+    app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({

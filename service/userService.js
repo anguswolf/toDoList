@@ -17,16 +17,16 @@ const buildRegistrationLink = (id, token) => {
   return `http://localhost:8000/user/${id}/confirm/${encodeURIComponent(token)}`
 }
 const sendRegistrationMail = async (email, link) => {
-	const senderAddress = 'augusto.ciuiccatosti@gmail.com';
+	const senderAddress = 'augusto.ciuccatosti@gmail.com';
 	const subject = 'todolist registration';
-	const body = `open this link to complete registration ${link}`;
+	const body = `Open this link to complete registration ${link}`;
 	const transport = {
 	  host: 'smtp.gmail.com',
 	  port: 465,
 	  secure: true, // true for 465, false for other ports
 	  auth: {
 		user: senderAddress,
-		pass: '****',
+		pass: '******', //creata ad hoc la password per le APP di Google
 	  },
 	};
 	const mailData = {
