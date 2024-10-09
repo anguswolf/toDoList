@@ -26,7 +26,7 @@ const sendRegistrationMail = async (email, link) => {
 	  secure: true, // true for 465, false for other ports
 	  auth: {
 		user: senderAddress,
-		pass: '******', //creata ad hoc la password per le APP di Google
+		pass: '*****', //creata ad hoc la password per le APP di Google
 	  },
 	};
 	const mailData = {
