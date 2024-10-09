@@ -4,6 +4,7 @@
 import createActivityValidator from '../validator/activity/createValidator.js'
 import updateActivityValidator from '../validator/activity/updateValidator.js'
 import createUserValidator from '../validator/user/createValidator.js'
+import loginValidator from '../validator/user/loginValidator.js'
 
 /**
  * ACTIVITY CONTROLLERS
@@ -18,6 +19,7 @@ import updateActivityController from './activity/updateActivityController.js'
  */
 import createUserController from './user/createUserController.js'
 import checkUserMailController from './user/checkUserMailController.js'
+import loginController from './user/loginController.js';
                                                                      
 const setup = (app) => {
     app.get('/activity/:id', retrieveActivityController);
@@ -27,6 +29,7 @@ const setup = (app) => {
     //definire app.use dopo la route app.post, app.patch
     app.post('/user',createUserValidator, createUserController);
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
+    app.post('/user/login', loginValidator, loginController)
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({

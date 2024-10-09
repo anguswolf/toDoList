@@ -42,8 +42,21 @@ const sendRegistrationMail = async (email, link) => {
   const confirmRegistration = async (id, token) => {
 	return await userRepo.confirmRegistration(id, token);
   }
+
+  const login = async (email, password) => {
+	const user =  await userRepo.getByEmail(email);
+  
+	if (!cryptoUtils.compare(password, user.salt, user.password)) {
+	  throw new UnauthorizedException('Unauthorized', 100201)
+	}
+	const {accessToken, refreshToken} = cryptoUtils.generateTokens(user)
+	user.accessToken = accessToken
+	user.refreshToken = refreshToken
+	return user;
+  }
   
   export {
 	register,
 	confirmRegistration,
+	login,
   }

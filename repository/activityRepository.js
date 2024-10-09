@@ -1,10 +1,7 @@
 import mongoose from 'mongoose'
 import { Schema } from 'mongoose';
+import { status } from '../const/const.js';
 
-const status = {
-  open:'open',
-  deleted:'deleted',
-}
 
 const activitySchema = new Schema({
     name: String,

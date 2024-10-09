@@ -4,10 +4,7 @@ import { Schema }  from 'mongoose';
 import MongoInternalException from '../exception/MongoInternalException.js';
 import NotFoundException from '../exception/NotFoundException.js';
 import UserAlreadyExistsException from '../exception/UserAlreadyExistException.js';
-const userStatus = {
-    pending: 'pending',
-    active: 'active',
-  }
+import { userStatus } from '../const/const.js';
 const userSchema = new Schema({
     email: {type: String, index: { unique: true }},
     displayName: String,
@@ -70,5 +67,17 @@ const confirmRegistration = async (id, token) => {
       throw new MongoInternalException(e.message, 100103)
     }
   }
+
+  const getByEmail = async (email) => {
+    const result = await userModel.findOne({email:email, status: userStatus.active})
+    if(!result) {
+      throw new UnauthorizedException('login failed', 100104);
+    }
+    return result.toJSON({versionKey:false})
+  }
   
-  export default {add,confirmRegistration}
+  export default {
+    add,
+    confirmRegistration,
+    getByEmail,
+  }
