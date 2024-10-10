@@ -61,9 +61,21 @@ const privateKey = '-----BEGIN RSA PRIVATE KEY-----\n'+
 
 const publicKey = '';
 
+const mailConfig = {
+  senderAddress: 'augusto.ciuccatosti@gmail.com',
+  smtpPassword: '*******',
+  subject: 'todolist registration',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for 465, false for other ports
+  html: '',
+
+}
+
 export {
   status,
   userStatus,
   privateKey,
   publicKey,
+  mailConfig,
 }

@@ -1,6 +1,7 @@
 import userRepo from '../repository/userRepository.js'
 import cryptoUtils from '../utils/cryptoUtils.js'
 import mailer from 'nodemailer';
+import {mailConfig} from '../const/const.js';
 
 const register = async (content) => {
   const  {password, salt} = cryptoUtils.hashPassword(content.password)
@@ -17,16 +18,16 @@ const buildRegistrationLink = (id, token) => {
   return `http://localhost:8000/user/${id}/confirm/${encodeURIComponent(token)}`
 }
 const sendRegistrationMail = async (email, link) => {
-	const senderAddress = 'augusto.ciuccatosti@gmail.com';
-	const subject = 'todolist registration';
+	const senderAddress = mailConfig.senderAddress;
+	const subject = mailConfig.subject;
 	const body = `Open this link to complete registration ${link}`;
 	const transport = {
-	  host: 'smtp.gmail.com',
-	  port: 465,
-	  secure: true, // true for 465, false for other ports
+	  host: mailConfig.host,
+	  port: mailConfig.port,
+	  secure: mailConfig.secure,
 	  auth: {
 		user: senderAddress,
-		pass: '*****', //creata ad hoc la password per le APP di Google
+		pass: mailConfig.smtpPassword, //creata ad hoc la password per le APP di Google
 	  },
 	};
 	const mailData = {
@@ -34,7 +35,7 @@ const sendRegistrationMail = async (email, link) => {
 	  subject: subject,
 	  text: body,
 	  to: email,
-	  html: '',
+	  html: mailConfig.html,
 	};
 	return await mailer.createTransport(transport).sendMail(mailData);
   }
