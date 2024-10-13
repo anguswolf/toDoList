@@ -2,7 +2,7 @@ import cryptoRandomString from 'crypto-random-string'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import {privateKey, publicKey} from '../const/const.js';
-//import UnauthorizedException from '../exception/UnathorizedException.js';
+import UnauthorizedException from '../exception/UnathorizedException.js';
 
 class CryptoUtils {
   generateUniqueCode(length, type) {
@@ -29,6 +29,17 @@ class CryptoUtils {
       refreshToken: generateToken(user, 7776000),// 3months
     }
   }
+
+  verifyJWT = (token) => {
+    try {
+      return jwt.verify(token, publicKey, {
+        ignoreExpiration: false,
+        algorithm: ['RS256'],
+      });
+    } catch (err) {
+      throw new UnauthorizedException('Invalid JWT');
+    }
+  }
 }
  
 const sha256 = (value, salt) => {
@@ -50,4 +61,6 @@ const generateToken = (user, expiration) => {
     }
   )
 }
+
+
 export default new CryptoUtils();

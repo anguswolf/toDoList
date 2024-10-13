@@ -1,6 +1,7 @@
 import {retrieveActivity} from '../../service/activityService.js'
 
 export default async (req, res) => {
+    console.log(req.params['id']);
     const  activityId = req.params['id'];
     const activity = await retrieveActivity(activityId)
     
