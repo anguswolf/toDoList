@@ -1,3 +1,4 @@
+import activityNormalizer from '../../normalizer/activityNormalizer.js';
 import {removeActivity} from '../../service/activityService.js'
 
 export default async (req, res) => {
@@ -5,7 +6,7 @@ export default async (req, res) => {
     const activity = await removeActivity(activityId)
 
     if (activity) {
-        res.status(200).json(activity)
+        res.status(200).json(activityNormalizer(activity))
     } else {
         res.status(500).json({ message: 'server error' })
     }

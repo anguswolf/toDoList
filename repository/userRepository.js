@@ -26,9 +26,6 @@ const add = async (content) => {
   try {
     const res = await new userModel(content).save();
     const out = res.toJSON({versionKey:false})
-    delete out.password;
-    delete out.salt;
-    delete out.registrationToken;
     return out
   } catch (e) {
     if(e.message.indexOf('E11000 duplicate key error') > -1) {
