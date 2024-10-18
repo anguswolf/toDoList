@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import { Schema } from 'mongoose';
 import { status } from '../const/const.js';
+import ForbiddenException from '../exception/ForbiddenException.js';
 
 
 const activitySchema = new Schema({
@@ -28,10 +29,18 @@ const addActivity = async (data) => {
 }
 
 const removeActivity = async (id) => {
+  const activity = await activityModel.findById(id);
+  if (activity.status === status.deleted) {
+    throw new ForbiddenException("Activity already deleted");
+  }
   return await updateActivity(id, {status: status.deleted})
 }
 
 const updateActivity = async (id, params) => {
+  const activity = await activityModel.findById(id);
+  if (activity.status === status.deleted) {
+    throw new ForbiddenException("Cannot update deleted activity");
+  }
   const res = await activityModel.findOneAndUpdate(
     {_id:id},
     params,

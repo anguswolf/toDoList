@@ -2,12 +2,12 @@ import activityNormalizer from '../../normalizer/activityNormalizer.js';
 import {updateActivity} from '../../service/activityService.js'
 
 export default async (req, res) => {
-    const  activityId = req.params['id'];
-    const activity = await updateActivity(activityId, req.body)
-    
-    if (activity) {
-        res.status(200).json(activityNormalizer(activity))
-    } else {
-        res.status(404).json({ message: 'no activity found' })
+    try {
+        const activityId = req.params['id'];
+        const activity = await updateActivity(activityId, req.body) 
+        res.status(200).json(activityNormalizer(activity))    
+    } catch (error) {
+        console.log(error.message + " - Response Status: " + error.status);
+        res.status(error.status || 500).json({ message: error.message })
     }
 }
