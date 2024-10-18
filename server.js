@@ -1,5 +1,5 @@
 import express from 'express';
-import setup from './controller/routes.js';
+import setup from './src/controller/routes.js';
 import connectionToDb from './database.js';
 
 const app = express();
