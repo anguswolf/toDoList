@@ -1,0 +1,2 @@
+#ignora la cartella /node_modules e tutti i suoi contenuti dal tracking git
+/node_modules
