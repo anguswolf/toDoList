@@ -1,5 +1,3 @@
-import mongoose from 'mongoose'
-import { Schema } from 'mongoose';
 import { activityStatus } from '../const/const.js';
 import ForbiddenException from '../exception/ForbiddenException.js';
 import { activityModel } from '../schema/activitySchema.js';
@@ -32,13 +30,19 @@ const retrieveActivity = async (id) => {
   const res = await activityModel.findById(id)
   return res?.toJSON({versionKey:false}) || res;
 }
-//const complete
+
+const completedActivity = async (id, userId) => {
+  if(!(id && userId)){return null}
+  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status:activityStatus.completed}},{upsert:false,new:true})
+  return activity?.toJSON({versionKey:false}) || null
+}
 
 
 export default {
   addActivity,
   updateActivity,
   removeActivity,
-  retrieveActivity
+  retrieveActivity,
+  completedActivity,
 
 }

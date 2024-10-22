@@ -24,6 +24,7 @@
     "chai": "^5.1.1",
     "chai-http": "^5.1.1",
     "mocha": "^10.7.3",
+    "mongodb-memory-server": "^10.1.2",
     "sinon": "^19.0.2"
   }
 }

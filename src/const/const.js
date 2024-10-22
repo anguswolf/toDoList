@@ -1,6 +1,7 @@
 const activityStatus = {
   open:'open',
   deleted:'deleted',
+  completed:'completed'
 }
 
 const userStatus = {

@@ -1,27 +1,9 @@
-
-import mongoose  from 'mongoose'
-import { Schema }  from 'mongoose';
 import MongoInternalException from '../exception/MongoInternalException.js';
 import NotFoundException from '../exception/NotFoundException.js';
 import UserAlreadyExistsException from '../exception/UserAlreadyExistException.js';
 import { userStatus } from '../const/const.js';
-const userSchema = new Schema({
-    email: {type: String, index: { unique: true }},
-    displayName: String,
-    password: String,
-    salt: String,
-    registrationToken: String,
-    status: { type: String, default: userStatus.pending },
-  },
-  {
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-      writeConcern: {w: 1, wtimeout: 2000},
-    }
-  }
-);
-const userModel = mongoose.model('users', userSchema);
+import { userModel } from '../schema/userSchema.js';
+
 const add = async (content) => {
   try {
     const res = await new userModel(content).save();
