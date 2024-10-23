@@ -23,7 +23,7 @@ import loginController from './user/loginController.js';
  * MIDDLEWARES
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
-import setActivityStatusCompleted from '../middleware/setActivityStatusCompleted.js'
+import flushAndSetActivityStatusCompleted from '../middleware/flushAndSetActivityStatusCompleted.js'
 
 const setup = (app) => {
     app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
@@ -35,7 +35,7 @@ const setup = (app) => {
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
     //app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,completeActivityController)
-    app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,setActivityStatusCompleted,updateActivityController)
+    app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,flushAndSetActivityStatusCompleted,updateActivityController)
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({
