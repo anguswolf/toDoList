@@ -1,5 +1,6 @@
 import { activityStatus } from '../const/const.js';
 import ForbiddenException from '../exception/ForbiddenException.js';
+import NotFoundException from '../exception/NotFoundException.js';
 import { activityModel } from '../schema/activitySchema.js';
 const addActivity = async (data) => {
   data.ownerId = data.userId;
@@ -17,6 +18,9 @@ const removeActivity = async (id) => {
 
 const updateActivity = async (id, params) => {
   const activity = await activityModel.findById(id);
+  if (!activity) {
+    throw new NotFoundException('Activity not found',200100) 
+  }
   if (activity.status === activityStatus.deleted) {
     throw new ForbiddenException("Cannot update deleted activity");
   }

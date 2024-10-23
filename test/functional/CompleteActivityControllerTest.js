@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import {expect} from 'chai';
 import mongoose from 'mongoose'
 import app from '../../server.js';
-import { activityStatus } from '../../src/const/index.js';
+import { activityStatus } from '../../src/const/const.js';
 import CryptoUtils from '../../src/utils/cryptoUtils.js';
 import {userFixtures} from '../fixture/userFixtures.js'
 import {activityFixtures} from '../fixture/activityFixtures.js'

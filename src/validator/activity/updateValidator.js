@@ -7,7 +7,7 @@ export default [
   validator.body(
     Joi.object().keys({
       name: Joi.string().optional(),
-      status: Joi.string().valid('open','closed').optional(),
+      status: Joi.string().valid('open','closed','completed').optional(),
       description: Joi.string().optional(),
       dueDate: Joi.number()
         .min(new Date().getTime()).optional(),

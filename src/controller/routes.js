@@ -12,6 +12,7 @@ import addActivityController from './activity/addActivityController.js'
 import retrieveActivityController from './activity/retrieveActivityController.js'
 import removeActivityController from './activity/removeActivityController.js'
 import updateActivityController from './activity/updateActivityController.js'
+import completeActivityController from './activity/completeActivityController.js'
 /**
  * USER CONTROLLERS
 */
@@ -19,9 +20,10 @@ import createUserController from './user/createUserController.js'
 import checkUserMailController from './user/checkUserMailController.js'
 import loginController from './user/loginController.js';
 /**
- * CHECK AUTHORIZATION - JWT
+ * MIDDLEWARES
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
+import setActivityStatusCompleted from '../middleware/setActivityStatusCompleted.js'
 
 const setup = (app) => {
     app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
@@ -32,6 +34,8 @@ const setup = (app) => {
     app.post('/user', createUserValidator, createUserController);
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
+    //app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,completeActivityController)
+    app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,setActivityStatusCompleted,updateActivityController)
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({
