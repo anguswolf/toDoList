@@ -40,7 +40,7 @@ const completedActivity = async (id, userId) => {
   const res = await activityModel.findOneAndUpdate(
     {_id:id, ownerId:userId},
     {$set:{status:activityStatus.completed}},
-    {upsert:false, new:false})
+    {upsert:false, new:true})
   if (!res) {
     throw new NotFoundException('Activity not found',200100) 
   }
