@@ -5,6 +5,7 @@ import createActivityValidator from '../validator/activity/createValidator.js'
 import updateActivityValidator from '../validator/activity/updateValidator.js'
 import createUserValidator from '../validator/user/createValidator.js'
 import loginValidator from '../validator/user/loginValidator.js'
+import completeValidator from '../validator/activity/completeValidator.js'
 /**
  * ACTIVITY CONTROLLERS
 */
@@ -23,7 +24,7 @@ import loginController from './user/loginController.js';
  * MIDDLEWARES
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
-import flushAndSetActivityStatusCompleted from '../middleware/flushAndSetActivityStatusCompleted.js'
+//import flushAndSetActivityStatusCompleted from '../middleware/flushAndSetActivityStatusCompleted.js'
 
 const setup = (app) => {
     app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
@@ -34,8 +35,7 @@ const setup = (app) => {
     app.post('/user', createUserValidator, createUserController);
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
-    //app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,completeActivityController)
-    app.patch('/:id/complete',checkAuthorizationMiddleware,updateActivityValidator,flushAndSetActivityStatusCompleted,updateActivityController)
+    app.patch('/activity/:id/complete',checkAuthorizationMiddleware,completeValidator,completeActivityController)
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({
