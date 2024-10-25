@@ -27,7 +27,7 @@ describe('----- Complete Activity Controller Tests -----', () => {
 
 
     describe('/PATCH Complete Activity Failure', () => {
-        it.only('it should return 400 when activityId is invalid', async () => {
+        it('it should return 400 when activityId is invalid', async () => {
             const res = await request.execute(app)
             .patch(`/activity/testid/complete`)
             .set('Authorization', 'Bearer ' + token.accessToken)
@@ -37,7 +37,7 @@ describe('----- Complete Activity Controller Tests -----', () => {
             expect(error.message).eq('ValidationError: "id" with value "testid" fails to match the required pattern: /^[a-fA-F0-9]{24}$/')
         });
 
-        it.only('it should return 404 when activity does not exists', async () => {
+        it('it should return 404 when activity does not exists', async () => {
             const res = await request.execute(app)
             .patch(`/activity/${new mongoose.Types.ObjectId()}/complete`)
             .set('Authorization', 'Bearer ' + token.accessToken)
