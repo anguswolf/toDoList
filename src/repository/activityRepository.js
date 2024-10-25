@@ -37,8 +37,14 @@ const retrieveActivity = async (id) => {
 
 const completedActivity = async (id, userId) => {
   if(!(id && userId)){return null}
-  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status:activityStatus.completed}},{upsert:false,new:true})
-  return activity?.toJSON({versionKey:false}) || null
+  const res = await activityModel.findOneAndUpdate(
+    {_id:id, ownerId:userId},
+    {$set:{status:activityStatus.completed}},
+    {upsert:false, new:false})
+  if (!res) {
+    throw new NotFoundException('Activity not found',200100) 
+  }
+  return res?.toJSON({versionKey:false}) || null
 }
 
 

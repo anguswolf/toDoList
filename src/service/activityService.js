@@ -25,10 +25,6 @@ const completeActivity = async (id, userId) => {
   }
 
 
-
-  
-
-
 export {
  	retrieveActivity,
 	addActivity,
