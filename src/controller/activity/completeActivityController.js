@@ -5,7 +5,7 @@ export default async (req, res) => {
     try {
         const activity = await completeActivity(req.params['id'], req.userId)
         if (activity) {
-            res.status(200).json({})       
+            res.status(200).json(activityNormalizer(activity))       
         }else {
          res.status(404).json({message: 'Activity not found', code: 200100}) 
         }    
