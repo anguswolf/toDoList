@@ -20,11 +20,14 @@ const removeActivity = async (id) => {
 	return activityRepo.removeActivity(id)
   }
 
+<<<<<<< Updated upstream
 const completeActivity = async (id, userId) => {
 	return activityRepo.completedActivity(id,userId)
   }
 
 
+=======
+>>>>>>> Stashed changes
 export {
  	retrieveActivity,
 	addActivity,

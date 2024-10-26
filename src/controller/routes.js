@@ -31,7 +31,6 @@ const setup = (app) => {
     app.post('/activity',checkAuthorizationMiddleware, createActivityValidator, addActivityController);
     app.patch('/activity/:id',checkAuthorizationMiddleware, updateActivityValidator, updateActivityController);
     app.delete('/activity/:id',checkAuthorizationMiddleware, removeActivityController);
-    //definire app.use dopo la route app.post, app.patch
     app.post('/user', createUserValidator, createUserController);
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
