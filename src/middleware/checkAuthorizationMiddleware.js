@@ -7,14 +7,14 @@ export default async (req, res, next) => {
     try{
       const jwtDecoded = jwtUtils.verifyJWT(token);
       if(!jwtDecoded) {
-        res.status(401).send('Authentication error. Invalid token.');
+        res.status(401).json({message: 'Authentication error. Invalid token.'});
       }
       req.userId = jwtDecoded.subject;
       next();
     } catch(e) {
-      res.status(401).send('Authentication error. Invalid token.' + e.message);
+      res.status(401).json({message: 'Authentication error. Invalid token.' + e.message});
     }
   } else {
-    res.status(401).send('Authentication error. Token required.');
+    res.status(401).json({message: 'Authentication error. Token required.'});
   }
 }

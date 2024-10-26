@@ -36,6 +36,7 @@ const setup = (app) => {
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
     app.patch('/activity/:id/complete',checkAuthorizationMiddleware,completeValidator,completeActivityController)
+    //app.patch('/activity/:id/uncomplete',checkAuthorizationMiddleware,uncompleteValidator,uncompleteActivityController)
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({
