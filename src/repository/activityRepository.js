@@ -2,6 +2,7 @@ import { activityStatus } from '../const/const.js';
 import ForbiddenException from '../exception/ForbiddenException.js';
 import NotFoundException from '../exception/NotFoundException.js';
 import { activityModel } from '../schema/activitySchema.js';
+
 const addActivity = async (data) => {
   data.ownerId = data.userId;
   const result = await new activityModel(data).save()
@@ -36,9 +37,13 @@ const retrieveActivity = async (id) => {
 }
 
 const completedActivity = async (id, userId) => {
-  if(!(id && userId)){return null}
-  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status:activityStatus.completed}},{upsert:false,new:true})
-  return activity?.toJSON({versionKey:false}) || null
+  if (!(id && userId)) { return null }
+  const activity = await activityModel.findOneAndUpdate(
+    { _id: id, ownerId: userId },
+    { $set: { status: activityStatus.completed } },
+    { upsert: false, new: true }
+  )
+  return activity?.toJSON({ versionKey: false }) || null
 }
 
 const uncompletedActivity = async (id, userId) => {

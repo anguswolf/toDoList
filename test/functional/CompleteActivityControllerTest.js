@@ -80,7 +80,7 @@ describe('----- Complete Activity Controller Tests -----', () => {
             .set('Content-type', 'application/json')
             .send();
             expect(res.status).eq(200);
-            expect(res.body._id).eq(activity._id);
+            expect(res.body.id).eq(activity._id);
             expect(res.body.name).eq(activity.name);
             expect(res.body.description).eq(activity.description);
             expect(res.body.status).eq(activityStatus.completed);

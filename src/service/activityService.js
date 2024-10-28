@@ -2,7 +2,7 @@ import activityRepo from '../repository/activityRepository.js'
 
 const retrieveActivity = async (id) => {
 	const activity = await activityRepo.retrieveActivity(id)
-	if (activity.status === 'archived') {
+	if (activity && activity.status === 'archived') {
 		return {};
 	}
 	return activity;
