@@ -13,8 +13,13 @@ class ActivityFixtures {
     if (data) {
       activity = {...activity, ...data}
     }
-    console.log(activity);
+    //console.log(activity);
     const activityDoc = await activityModel.create(activity);
+    return activityDoc.toJSON({flattenObjectIds:true, versionKey:false})
+  }
+
+  async getFromDb (id){
+    const activityDoc = await activityModel.findById(id);
     return activityDoc.toJSON({flattenObjectIds:true, versionKey:false})
   }
 

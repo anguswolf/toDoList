@@ -1,7 +1,8 @@
 const activityStatus = {
   open:'open',
   deleted:'deleted',
-  completed:'completed'
+  completed:'completed',
+  archived: 'archived'
 }
 
 const userStatus = {

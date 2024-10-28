@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 const dbName = 'todolist'
 const user='augustociuccatosti'
-
 const password='pippocalogero'
 
 const connectionUrl = `mongodb+srv://

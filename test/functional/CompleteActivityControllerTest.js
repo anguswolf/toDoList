@@ -60,7 +60,7 @@ describe('----- Complete Activity Controller Tests -----', () => {
             expect(error.message).eq('Authentication error. Token required.')
         });
         
-        it.only('it should return 401 when invalid Token is provided', async () => {
+        it('it should return 401 when invalid Token is provided', async () => {
             const res = await request.execute(app)
             .patch(`/activity/${new mongoose.Types.ObjectId()}/complete`)
             .set('Authorization', 'Bearer ' + 'invalid Token')

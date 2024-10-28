@@ -17,4 +17,8 @@ const activitySchema = new Schema({
   }
 );
 activitySchema.index({ name: 1 });
+activitySchema.statics.findAll = function() {
+  return this.find({});
+};
+
 export const activityModel = mongoose.model('activities', activitySchema);

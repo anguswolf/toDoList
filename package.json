@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "set NODE_ENV=test&& mocha 'test/**/*.js' --recursive -c --t 50000 --exit"
+    "test": "set NODE_ENV=test&& mocha 'test/**/*.js' --recursive -c --t 50000 --exit",
+    "test-mac": "set NODE_ENV=test && mocha 'test/**/*.js' --recursive -c --t 50000 --exit"
   },
   "keywords": [],
   "author": "",

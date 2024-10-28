@@ -41,6 +41,26 @@ const completedActivity = async (id, userId) => {
   return activity?.toJSON({versionKey:false}) || null
 }
 
+const uncompletedActivity = async (id, userId) => {
+  if(!(id && userId)){return null}
+  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId,status:activityStatus.completed},{$set:{status:activityStatus.open}},{upsert:false,new:true})
+  return activity?.toJSON({versionKey:false}) || null
+}
+
+const archivedActivity = async (id, userId) => {
+  if(!(id && userId)){return null}
+  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId,status:activityStatus.completed},{$set:{status:activityStatus.archived}},{upsert:false,new:true})
+  return activity?.toJSON({versionKey:false}) || null
+}
+
+const retrieveActivities = async () => {
+  //console.log('test')
+  const res = await activityModel.findAll()
+  //console.log(res)
+  return res
+  
+}
+
 
 export default {
   addActivity,
@@ -48,5 +68,8 @@ export default {
   removeActivity,
   retrieveActivity,
   completedActivity,
+  uncompletedActivity,
+  archivedActivity,
+  retrieveActivities,
 
 }

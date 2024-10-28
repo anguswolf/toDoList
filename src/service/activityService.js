@@ -1,7 +1,11 @@
 import activityRepo from '../repository/activityRepository.js'
 
 const retrieveActivity = async (id) => {
-	return await activityRepo.retrieveActivity(id)
+	const activity = await activityRepo.retrieveActivity(id)
+	if (activity.status === 'archived') {
+		return {};
+	}
+	return activity;
 	
   }
 
@@ -24,15 +28,30 @@ const completeActivity = async (id, userId) => {
 	return activityRepo.completedActivity(id,userId)
   }
 
+const uncompleteActivity = async (id, userId) => {
+	return activityRepo.uncompletedActivity(id,userId)
+  }
+
+const archiveActivity = async (id, userId) => {
+	return activityRepo.archivedActivity(id,userId)
+  }
+
+const retrieveActivities = async () => {
+	const activities = await activityRepo.retrieveActivities()
+	//console.log("SERVICE: "+ activities)
+	const result = activities.filter(activity => activity.status !== 'archived');
+	return result;
+	
+  }
 
 
-  
-
-
-export {
+  export {
  	retrieveActivity,
 	addActivity,
 	updateActivity,
 	removeActivity,
-	completeActivity
+	completeActivity,
+	uncompleteActivity,
+	archiveActivity,
+	retrieveActivities,
 }

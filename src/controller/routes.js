@@ -6,6 +6,7 @@ import updateActivityValidator from '../validator/activity/updateValidator.js'
 import createUserValidator from '../validator/user/createValidator.js'
 import loginValidator from '../validator/user/loginValidator.js'
 import completeValidator from '../validator/activity/completeValidator.js'
+import uncompleteValidator from '../validator/activity/uncompleteValidator.js'
 /**
  * ACTIVITY CONTROLLERS
 */
@@ -14,6 +15,9 @@ import retrieveActivityController from './activity/retrieveActivityController.js
 import removeActivityController from './activity/removeActivityController.js'
 import updateActivityController from './activity/updateActivityController.js'
 import completeActivityController from './activity/completeActivityController.js'
+import uncompleteActivityController from './activity/uncompleteActivityController.js'
+import archiveActivityController from './activity/archiveActivityController.js'
+import retrieveActivitesController from './activity/retrieveActivitesController.js'
 /**
  * USER CONTROLLERS
 */
@@ -36,7 +40,9 @@ const setup = (app) => {
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
     app.post('/user/login', loginValidator, loginController)
     app.patch('/activity/:id/complete',checkAuthorizationMiddleware,completeValidator,completeActivityController)
-    //app.patch('/activity/:id/uncomplete',checkAuthorizationMiddleware,uncompleteValidator,uncompleteActivityController)
+    app.patch('/activity/:id/uncomplete',checkAuthorizationMiddleware,uncompleteValidator,uncompleteActivityController)
+    app.patch('/activity/:id/archive',checkAuthorizationMiddleware,uncompleteValidator,archiveActivityController)
+    app.get('/activities',checkAuthorizationMiddleware, retrieveActivitesController);
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({
