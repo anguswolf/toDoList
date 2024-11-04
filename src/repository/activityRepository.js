@@ -35,11 +35,43 @@ const retrieveActivity = async (id) => {
   return res?.toJSON({versionKey:false}) || res;
 }
 
-const completedActivity = async (id, userId) => {
+const _changeStatus = async (id, userId, status) => {
   if(!(id && userId)){return null}
-  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status:activityStatus.completed}},{upsert:false,new:true})
+  const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status}},{upsert:false,new:true})
   return activity?.toJSON({versionKey:false}) || null
 }
+
+const completedActivity = async (id, userId) => {
+  return _changeStatus(id, userId, activityStatus.completed)
+}
+
+const uncompletedActivity = async (id, userId) => {
+  return _changeStatus(id, userId, activityStatus.open)
+}
+
+const archiveActivity = async (id, userId) => {
+  const activity = await activityModel.findOne({_id:id, ownerId:userId})
+  if (activity) {
+    switch (activity.status) {
+      case activityStatus.archived:
+        return activity?.toJSON({versionKey:false})
+      
+      case activityStatus.deleted:
+        throw new ForbiddenException('Can not archive a deleted activity', 200221)
+      
+      case activityStatus.open:
+        throw new ForbiddenException('Can not archive a not completed activity', 200220)
+    
+      default:
+        return _changeStatus(id, userId, activityStatus.archived)    
+    }
+  
+  }
+      
+  return null
+}
+
+
 
 
 export default {
@@ -48,5 +80,7 @@ export default {
   removeActivity,
   retrieveActivity,
   completedActivity,
+  uncompletedActivity,
+  archiveActivity,
 
 }

@@ -13,10 +13,10 @@ let user;
 let token;
 let activity;
 const buildPath = (value) => {
-    return '/activity/%%id%%/uncomplete'.replace('%%id%%', value); //Refactor in tutti i test
+    return '/activity/%%id%%/archive'.replace('%%id%%', value);
 }
 
-describe('----- Uncomplete Activity Controller Tests -----', () => {
+describe('----- Archive Activity Controller Tests -----', () => {
     beforeEach(async () => {
         user = await userFixtures.addUserInDb();
         activity = await activityFixtures.addActivityToDb(user._id,{status: activityStatus.completed});
@@ -29,7 +29,7 @@ describe('----- Uncomplete Activity Controller Tests -----', () => {
     })
 
 
-    describe('/PATCH Uncomplete Activity Failure', () => {
+    describe('/PATCH Archive Activity Failure', () => {
         it('it should return 400 when activityId is invalid', async () => {
             const res = await request.execute(app)
             .patch(buildPath('IdNonValido'))
@@ -72,10 +72,34 @@ describe('----- Uncomplete Activity Controller Tests -----', () => {
             expect(res.status).eq(401);
             expect(error.message).eq('Authentication error. Invalid token.Invalid JWT')
         });
+
+        it('it should return 403 when activity is not completed', async () => {
+            const activity = await activityFixtures.addActivityToDb(user._id,{status: activityStatus.open});
+            const res = await request.execute(app)
+            .patch(buildPath(activity._id))
+            .set('Authorization', 'Bearer ' + token.accessToken)
+            .set('Content-type', 'application/json')
+            .send();
+            const error = JSON.parse(res.error.text);
+            expect(res.status).eq(403);
+            expect(error.message).eq('Can not archive a not completed activity')
+        });
+
+        it('it should return 403 when activity is not completed', async () => {
+            const activity = await activityFixtures.addActivityToDb(user._id,{status: activityStatus.deleted});
+            const res = await request.execute(app)
+            .patch(buildPath(activity._id))
+            .set('Authorization', 'Bearer ' + token.accessToken)
+            .set('Content-type', 'application/json')
+            .send();
+            const error = JSON.parse(res.error.text);
+            expect(res.status).eq(403);
+            expect(error.message).eq('Can not archive a deleted activity')
+        });
     });
 
-    describe('/PATCH Uncomplete Activity Success', () => {
-        it('it should return 200 and update the Status field to completed', async () => {
+    describe('/PATCH Archive Activity Success', () => {
+        it('it should return 200 and update the Status field to archived', async () => {
             const res = await request.execute(app)
             .patch(buildPath(activity._id))
             .set('Authorization', 'Bearer ' + token.accessToken)
@@ -85,12 +109,27 @@ describe('----- Uncomplete Activity Controller Tests -----', () => {
             expect(res.body._id).eq(activity._id);
             expect(res.body.name).eq(activity.name);
             expect(res.body.description).eq(activity.description);
-            expect(res.body.status).eq(activityStatus.open);
+            expect(res.body.status).eq(activityStatus.archived);
             const activityFromDb = await activityFixtures.getFromDb(activity._id);
             expect(activityFromDb).not.null;
-            expect(activityFromDb.status).eq(activityStatus.open);
+            expect(activityFromDb.status).eq(activityStatus.archived);
+        });
 
-           
+        it('it should return 200 if the activity is already archived', async () => {
+            const activity = await activityFixtures.addActivityToDb(user._id,{status: activityStatus.archived});
+            const res = await request.execute(app)
+            .patch(buildPath(activity._id))
+            .set('Authorization', 'Bearer ' + token.accessToken)
+            .set('Content-type', 'application/json')
+            .send();
+            expect(res.status).eq(200);
+            expect(res.body._id).eq(activity._id);
+            expect(res.body.name).eq(activity.name);
+            expect(res.body.description).eq(activity.description);
+            expect(res.body.status).eq(activityStatus.archived);
+            const activityFromDb = await activityFixtures.getFromDb(activity._id);
+            expect(activityFromDb).not.null;
+            expect(activityFromDb.status).eq(activityStatus.archived);
         });
     });
     

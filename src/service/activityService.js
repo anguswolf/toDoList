@@ -24,6 +24,14 @@ const completeActivity = async (id, userId) => {
 	return activityRepo.completedActivity(id,userId)
   }
 
+const uncompleteActivity = async (id, userId) => {
+	return activityRepo.uncompletedActivity(id,userId)
+  }
+
+const archiveActivity = async (id, userId) => {
+	return activityRepo.archiveActivity(id,userId)
+  }
+
 
 
   
@@ -34,5 +42,7 @@ export {
 	addActivity,
 	updateActivity,
 	removeActivity,
-	completeActivity
+	completeActivity,
+	uncompleteActivity,
+	archiveActivity,
 }
