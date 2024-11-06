@@ -16,6 +16,7 @@ import updateActivityController from './activity/updateActivityController.js'
 import completeActivityController from './activity/completeActivityController.js'
 import uncompleteActivityController from './activity/uncompleteActivityController.js'
 import archiveActivityController from './activity/archiveActivityController.js'
+import listActivityController from './activity/listActivityController.js'
 /**
  * USER CONTROLLERS
 */
@@ -29,7 +30,8 @@ import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddle
 //import flushAndSetActivityStatusCompleted from '../middleware/flushAndSetActivityStatusCompleted.js'
 
 const setup = (app) => {
-    app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
+    app.get('/activity/',checkAuthorizationMiddleware, listActivityController);
+    //app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
     app.post('/activity',checkAuthorizationMiddleware, createActivityValidator, addActivityController);
     app.patch('/activity/:id',checkAuthorizationMiddleware, updateActivityValidator, updateActivityController);
     app.delete('/activity/:id',checkAuthorizationMiddleware, removeActivityController);
@@ -40,6 +42,7 @@ const setup = (app) => {
     app.patch('/activity/:id/complete',checkAuthorizationMiddleware,changeStatusValidator,completeActivityController)
     app.patch('/activity/:id/uncomplete',checkAuthorizationMiddleware,changeStatusValidator, uncompleteActivityController)
     app.patch('/activity/:id/archive',checkAuthorizationMiddleware,changeStatusValidator, archiveActivityController)
+    
     
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {

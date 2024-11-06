@@ -35,6 +35,14 @@ const retrieveActivity = async (id) => {
   return res?.toJSON({versionKey:false}) || res;
 }
 
+const listActivities = async () => {
+  const res = await activityModel.findAll({});
+  //const res = await activityModel.find({});
+  console.log("FindAll")
+  //return activity?.toJSON({versionKey:false}) || null
+  return res?.map(item => item.toJSON({versionKey:false}));
+}
+
 const _changeStatus = async (id, userId, status) => {
   if(!(id && userId)){return null}
   const activity = await activityModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status}},{upsert:false,new:true})
@@ -82,5 +90,6 @@ export default {
   completedActivity,
   uncompletedActivity,
   archiveActivity,
+  listActivities,
 
 }
