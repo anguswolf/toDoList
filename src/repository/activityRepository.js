@@ -35,10 +35,11 @@ const retrieveActivity = async (id) => {
   return res?.toJSON({versionKey:false}) || res;
 }
 
-const listActivities = async () => {
-  const res = await activityModel.findAll({});
-  //const res = await activityModel.find({});
-  console.log("FindAll")
+const listActivities = async (userId) => {
+  
+  //const res = await activityModel.findAll({ownerId: userId});
+  const res = await activityModel.find({ownerId: userId});
+  //console.log(res?.map(item => item.toJSON({versionKey:false})))
   //return activity?.toJSON({versionKey:false}) || null
   return res?.map(item => item.toJSON({versionKey:false}));
 }

@@ -10,29 +10,34 @@ import {default as chaiHttp, request} from "chai-http";
 chai.use(chaiHttp);
 
 let user;
+let user2;
 let token;
+let token2;
 let activity;
-
-const listUserActivities = [];
+let listUserActivities = [];
 
 const buildPath = () => {
-    return '/activity/'; //Refactor in tutti i test
+    return '/activity/'; 
 }
-Mocha.process.removeListener("uncaughtException");
+//Mocha.process.removeListener("uncaughtException");
 
 describe('----- List Activity Controller Tests -----', () => {
     beforeEach(async () => {
+        
         user = await userFixtures.addUserInDb();
+        user2 = await userFixtures.addUserInDb({email: 'fake2@test.com'});
         
         for (let index = 0; index < 3; index++) {
             listUserActivities.push(await activityFixtures.addActivityToDb(user._id))   
         }
         token = CryptoUtils.generateTokens(user);
+        token2 = CryptoUtils.generateTokens(user2);
     });
 
     afterEach(async () => {
         await userFixtures.restore();
         await activityFixtures.restore();
+        listUserActivities = []; //Svuota la lista prima di ogni test
     })
 
 
@@ -61,10 +66,10 @@ describe('----- List Activity Controller Tests -----', () => {
     });
 
     describe('/GET List Activity Success', () => {
-        it.only('it should return 200 and return an empty array if user has no activities', async () => {
+        it('it should return 200 and return an empty array if user has no activities', async () => {
             const res = await request.execute(app)
             .get(buildPath())
-            .set('Authorization', 'Bearer ' + token.accessToken)
+            .set('Authorization', 'Bearer ' + token2.accessToken)
             .set('Content-type', 'application/json')
             .send();
             expect(res.status).eq(200);
@@ -80,7 +85,25 @@ describe('----- List Activity Controller Tests -----', () => {
             .send();
             expect(res.status).eq(200);
             expect(res.body).has.length(3);
-           
+            expect(res.body[0].ownerId).not.exist
+            expect(res.body[0].updatedAt).not.exist
+            
+        });
+
+        it('it should return 200 and all the users activities if the ownerId matches the ownerId present in the database.', async () => {
+            const res = await request.execute(app)
+            .get(buildPath())
+            .set('Authorization', 'Bearer ' + token.accessToken)
+            .set('Content-type', 'application/json')
+            .send();
+            //console.log(listUserActivities)
+            expect(res.status).eq(200);  
+            const activitiesFromDb = await activityFixtures.getByUser(user._id);
+            //console.log(activitiesFromDb)
+            expect(activitiesFromDb).not.null;
+            expect(listUserActivities[0].ownerId).eq(activitiesFromDb[0].ownerId)
+            expect(listUserActivities[1].ownerId).eq(activitiesFromDb[1].ownerId)
+            expect(listUserActivities[2].ownerId).eq(activitiesFromDb[2].ownerId)
         });
     });
     

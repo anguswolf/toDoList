@@ -5,8 +5,8 @@ const retrieveActivity = async (id) => {
 	
   }
 
-const listActivities = async () => {
-	return await activityRepo.listActivities()
+const listActivities = async (userId) => {
+	return await activityRepo.listActivities(userId)
 }
 
 
