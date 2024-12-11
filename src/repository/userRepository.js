@@ -3,6 +3,7 @@ import NotFoundException from '../exception/NotFoundException.js';
 import UserAlreadyExistsException from '../exception/UserAlreadyExistException.js';
 import { userStatus } from '../const/const.js';
 import { userModel } from '../schema/userSchema.js';
+import UnauthorizedException from '../exception/UnathorizedException.js';
 
 const add = async (content) => {
   try {

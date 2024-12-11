@@ -2,6 +2,7 @@ import { activityStatus } from '../const/const.js';
 import ForbiddenException from '../exception/ForbiddenException.js';
 import NotFoundException from '../exception/NotFoundException.js';
 import { activityModel } from '../schema/activitySchema.js';
+
 const addActivity = async (data) => {
   data.ownerId = data.userId;
   const result = await new activityModel(data).save()
@@ -13,7 +14,7 @@ const removeActivity = async (id) => {
   if (activity.status === activityStatus.deleted) {
     throw new ForbiddenException("Activity already deleted");
   }
-  return await updateActivity(id, {status: status.deleted})
+  return await updateActivity(id, {status: activityStatus.deleted})
 }
 
 const updateActivity = async (id, params) => {
