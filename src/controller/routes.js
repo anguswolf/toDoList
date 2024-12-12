@@ -30,17 +30,17 @@ import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddle
 //import flushAndSetActivityStatusCompleted from '../middleware/flushAndSetActivityStatusCompleted.js'
 
 const setup = (app) => {
-    app.get('/activity/',checkAuthorizationMiddleware, listActivityController);
-    app.get('/activity/:id',checkAuthorizationMiddleware, retrieveActivityController);
-    app.post('/activity',checkAuthorizationMiddleware, createActivityValidator, addActivityController);
-    app.patch('/activity/:id',checkAuthorizationMiddleware, updateActivityValidator, updateActivityController);
-    app.delete('/activity/:id',checkAuthorizationMiddleware, removeActivityController);
-    app.post('/user', createUserValidator, createUserController);
-    app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
-    app.post('/user/login', loginValidator, loginController)
-    app.patch('/activity/:id/complete',checkAuthorizationMiddleware,changeStatusValidator,completeActivityController)
-    app.patch('/activity/:id/uncomplete',checkAuthorizationMiddleware,changeStatusValidator, uncompleteActivityController)
-    app.patch('/activity/:id/archive',checkAuthorizationMiddleware,changeStatusValidator, archiveActivityController)
+    app.get('/activities/',checkAuthorizationMiddleware, listActivityController);
+    app.get('/activities/:id',checkAuthorizationMiddleware, retrieveActivityController);
+    app.post('/activities',checkAuthorizationMiddleware, createActivityValidator, addActivityController);
+    app.patch('/activities/:id',checkAuthorizationMiddleware, updateActivityValidator, updateActivityController);
+    app.delete('/activities/:id',checkAuthorizationMiddleware, removeActivityController);
+    app.post('/users', createUserValidator, createUserController);
+    app.get('/users/:id/confirm/:registrationToken',checkUserMailController);
+    app.post('/users/login', loginValidator, loginController)
+    app.patch('/activities/:id/complete',checkAuthorizationMiddleware,changeStatusValidator,completeActivityController)
+    app.patch('/activities/:id/uncomplete',checkAuthorizationMiddleware,changeStatusValidator, uncompleteActivityController)
+    app.patch('/activities/:id/archive',checkAuthorizationMiddleware,changeStatusValidator, archiveActivityController)
     
     //definire app.use dopo la route app.post, app.patch
     app.use((err, req, res, next) => {
