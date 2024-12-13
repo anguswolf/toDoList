@@ -1,8 +1,22 @@
 import activityRepo from '../repository/activityRepository.js'
 
 const retrieveActivity = async (id) => {
-	return await activityRepo.retrieveActivity(id)
-	
+	const activityData = await activityRepo.retrieveActivity(id)
+
+    // link HATEOAS
+    const links = {
+      self: { href: `/activities/${id}` },
+      update: { href: `/activities/${id}`, method: 'PATCH' },
+      complete: { href: `/activities/${id}`, method: 'PATCH' },
+      uncomplete: { href: `/activities/${id}`, method: 'PATCH' },
+      archive: { href: `/activities/${id}`, method: 'PATCH' },
+      delete: { href: `/activities/${id}`, method: 'DELETE' },
+      list: { href: `/activities`, method: 'GET' }
+    };
+    console.log({ ...activityData, _links: links });
+
+    return { ...activityData, _links: links }; // Combina i dati con i link HATEOAS
+		
   }
 
 const listActivities = async (userId) => {

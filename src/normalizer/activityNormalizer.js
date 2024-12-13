@@ -5,6 +5,7 @@ const get = (activity) => {
     description: activity.description,
     dueDate: activity.dueDate,
     status: activity.status,
+    _links: activity._links,
   }
   return out
 }

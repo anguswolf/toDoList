@@ -10,6 +10,9 @@ const addActivity = async (data) => {
 
 const removeActivity = async (id) => {
   const activity = await activityModel.findById(id);
+  if (!activity) {
+    throw new NotFoundException('Activity not found',200101) 
+  }
   if (activity.status === activityStatus.deleted) {
     throw new ForbiddenException("Activity already deleted");
   }
@@ -31,8 +34,18 @@ const updateActivity = async (id, params) => {
   return res?.toJSON({versionKey:false}) || res;
 }
 const retrieveActivity = async (id) => {
-  const res = await activityModel.findById(id)
-  return res?.toJSON({versionKey:false}) || res;
+
+  try {
+    const activity = await activityModel.findById(id);
+    if (!activity) {
+      throw new NotFoundException('Activity not found', 200101);
+    }
+    return activity.toJSON({ versionKey: false });
+
+  } catch (error) {
+    console.error(error.message);
+    throw error; 
+  }
 }
 
 const listActivities = async (userId) => {
