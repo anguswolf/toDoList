@@ -11,6 +11,6 @@ export default async (req, res) => {
         }    
     } catch (error) {
         console.log(error.message + " - Response Status: " + error.status);
-        res.status(error.status || 500).json({ message: error.message, code: error.code})
+        res.status(error.status || 500).json({ message: error.message })
     }
 }
