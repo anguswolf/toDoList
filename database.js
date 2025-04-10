@@ -12,7 +12,7 @@ ${user}:${password}
 const connect = async () => {
   try {
     console.log("NODE_ENV: -" + process.env.NODE_ENV +"-", typeof process.env.NODE_ENV)
-    if (process.env.NODE_ENV.toString() === 'test') {
+    if (process.env.NODE_ENV !== undefined && process.env.NODE_ENV.toString() === 'test') {
       const mongoServer = await MongoMemoryServer.create();
       await mongoose.connect(mongoServer.getUri(), {dbName: dbName});
       console.log('connected to in memory db');

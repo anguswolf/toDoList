@@ -13,7 +13,6 @@ class ActivityFixtures {
     if (data) {
       activity = {...activity, ...data}
     }
-    console.log(activity);
     const activityDoc = await activityModel.create(activity);
     return activityDoc.toJSON({flattenObjectIds:true, versionKey:false})
   }
@@ -21,6 +20,17 @@ class ActivityFixtures {
   async restore() {
     await activityModel.deleteMany();
   }
+  async getFromDb(activityId){
+    const activityDoc = await activityModel.findById(activityId)
+    return activityDoc.toJSON({flattenObjectIds:true, versionKey:false})
+  }
+
+  async getByUser(ownerId){
+    const activityDoc = await activityModel.find({ownerId:ownerId})
+    return activityDoc.map(item => item.toJSON({ flattenObjectIds: true, versionKey: false }));
+  }
+
+
 }
 
 export const activityFixtures = new ActivityFixtures();
