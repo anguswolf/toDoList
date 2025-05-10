@@ -1,13 +1,16 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-const dbName = 'todolist'
-const user='augustociuccatosti'
+import dotenv from "dotenv";
 
-const password='pippocalogero'
+dotenv.config();
+const dbName = process.env.MONGO_DB_NAME;
+const user= process.env.MONGO_DB_USER;
+const password = process.env.MONGO_DB_PASSWORD;
+const cluster = process.env.MONGO_DB_CLUSTER;
+const appName= process.env.MONGO_DB_APPNAME;
 
 const connectionUrl = `mongodb+srv://
-${user}:${password}
-@clustertodolist.lc6tm.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=ClusterToDoList'`
+${user}:${password}@${cluster}/${dbName}?retryWrites=true&w=majority&appName=${appName}`
 
 const connect = async () => {
   try {

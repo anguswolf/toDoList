@@ -2,21 +2,22 @@ import express from 'express';
 import setup from './src/controller/routes.js';
 import connectionToDb from './database.js';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const app = express();
-/*const host = 'localhost';*/
-const host = '0.0.0.0';
-const port = 8000;
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(cors({
-	origin: ['http://localhost:5173', 'http://localhost:8080'],
+	origin: [process.env.CLIENT_URL, process.env.ALT_CLIENT_URL],
 }));
 
 connectionToDb().then(() => {
 	setup(app);
 	app.listen(port, host, () => {
-		console.log('Server is running on http://localhost:8000');
+		console.log(`Server is running on http://${host}:${port}`);
 	})
 }).catch((error) => {
 	console.log('Server not started' + error)
